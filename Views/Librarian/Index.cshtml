@@ -1,0 +1,64 @@
+﻿@model List<Book>
+
+<h1> Welcome to the Books Manager Index</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Genre</th>
+            <th>Author</th>
+            <th>Availability</th>
+            <th>Book History</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Book b in Model)
+        {
+            <tr>
+                <td>@b.Id</td>
+                <td>@b.Name</td>
+                <td>@b.Genre</td>
+                <td>@b.Author</td>
+                <td>
+                    @if(b.IsArchived == false)
+                    {
+                        <form asp-controller="Librarian" asp-action="ArchiveBook" method="post">
+                            <input type="hidden" name="bookId" value="@b.Id" />
+                            <button type="submit">Archive Book</button>
+                        </form>
+                    }
+                    @if(User.IsInRole(Constants.SuperAdminRole)){
+                        @if(b.IsArchived == true)
+                        {
+                            <form asp-controller="Librarian" asp-action="UnArchiveBook" method="post">
+                                <input type="hidden" name="bookId" value="@b.Id" />
+                                <button type="submit">UnArchive Book</button>
+                            </form>            
+                        }
+                    }
+                    else
+                    {
+                        <text>Archived</text>
+                    }
+                </td>
+                <td><a asp-controller="Librarian" asp-action="BookBorrowingHistory" asp-route-bookId="@b.Id">View Borrowing History</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form asp-controller="Librarian" asp-action="AddNewBook" method="post">
+    <div class="form-group">
+        <label for="bookTitle">Title:</label>
+        <input type="text" class="form-control" id="bookTitle" name="bookTitle" required>
+    </div>
+    <div class="form-group">
+        <label for="bookGenre">Genre:</label>
+        <input type="text" class="form-control" id="bookGenre" name="bookGenre" required>
+    </div>
+    <div class="form-group">
+        <label for="bookAuthor">Author:</label>
+        <input type="text" class="form-control" id="bookAuthor" name="bookAuthor" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Book</button>
+</form>

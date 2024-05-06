@@ -1,0 +1,34 @@
+﻿@model List<BorrowingHistory>
+
+<h1> Welcome to the Books Manager Index</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Genre</th>
+            <th>Author</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (BorrowingHistory bh in Model)
+        {
+            <tr>
+                <td>@bh.Id</td>
+                <td>@bh.UserId</td>
+                <td>@bh.BookId</td>
+                <td>@bh.BorrowedDate</td>
+                <td>
+                    @if (bh.ReturnedDate == DateTime.MinValue)
+                    {
+                        <text>TBD</text>
+                    }
+                    else {
+                        @bh.ReturnedDate
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

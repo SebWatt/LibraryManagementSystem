@@ -1,0 +1,46 @@
+﻿@model LibraryManagementSystem.Models.ViewModels.ReviewUsersViewModel
+
+<h2></h2>
+<table class="table table-striped">
+    <thead> 
+        <tr>
+            <th>User</th>
+            @foreach(string role in Model.Roles)
+            {
+                <th>@role</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model.Members)
+        {
+            <tr>
+                <td>@user.Name</td>
+
+                @foreach (string role in Model.Roles)
+                {
+                    @if(user.Roles.Contains(role))
+                    {
+                        <td style="background-color:green">
+                            <form asp-controller="Admin" asp-action="ToggleRole" method="post">
+                                <input type="hidden" name="roleName" value="@role" />
+                                <input type="hidden" name="userName" value="@user.Name" />
+                                <button type="submit">Toggle Role</button>
+                            </form>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="background-color:red">
+                            <form asp-controller="Admin" asp-action="ToggleRole" method="post">
+                                <input type="hidden" name="roleName" value="@role" />
+                                <input type="hidden" name="userName" value="@user.Name" />
+                                <button type="submit">Toggle Role</button>
+                            </form>
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

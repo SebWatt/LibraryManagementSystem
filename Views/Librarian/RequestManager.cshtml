@@ -1,0 +1,82 @@
+﻿@model List<BorrowRequest>
+
+<h1> Welcome to the Books Manager Index</h1>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Request Id</th>
+            <th>Book Id</th>
+            <th>User Id</th>
+            <th>Date Time</th>
+            <th>Approved</th>
+            <th>Links</th>
+            <th>Return Book</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (BorrowRequest br in Model)
+        {
+            <tr>
+                <td>@br.Id</td>
+                <td>@br.BookId</td>
+                <td>@br.UserId</td>
+                <td>@br.DateTime</td>
+                <td>@br.IsApproved</td>
+                
+                @if (br.IsApproved == "pending")
+                {
+                    <td>
+                        <form asp-controller="Librarian" asp-action="ApproveRequest" method="post">
+                            <input type="hidden" name="bookId" value="@br.BookId" />
+                            <input type="hidden" name="userId" value="@br.UserId" />
+                            <input type="hidden" name="id" value="@br.Id" />
+                            <button type="submit">Accept Request </button>
+                        </form> 
+                        |
+                        <form asp-controller="Librarian" asp-action="DenyRequest" method="post">
+                            <input type="hidden" name="bookId" value="@br.BookId" />
+                            <input type="hidden" name="id" value="@br.Id" />
+                            <button type="submit">Deny Request</button>
+                        </form>
+                    </td>
+                    <td>
+                        <text>Can not Return Book.</text>
+                    </td>
+                }
+                else if(br.IsApproved == "approved")
+                {
+                    <td>
+                        <text>Made Decision</text>
+                    </td>
+                    <td>
+                        <form asp-controller="Librarian" asp-action="ReturnBook" method="post">
+                            <input type="hidden" name="bookId" value="@br.BookId" />
+                            <input type="hidden" name="userId" value="@br.UserId" />
+                            <input type="hidden" name="id" value="@br.Id" />
+                            <button type="submit">Return Book</button>
+                        </form>
+                    </td>
+
+                }
+                else if (br.IsApproved == "denied")
+                {
+                    <td>
+                        <text>Made Decision</text>
+                    </td>
+                    <td>
+                        <text>Can not Return Book.</text>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <text>Book has been returned.</text>
+                    </td>
+                    <td>
+                        <text>Book has been returned.</text>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

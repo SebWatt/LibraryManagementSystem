@@ -1,0 +1,9 @@
+﻿<h2>Warning</h2>
+<p>@ViewBag.WarningMessage</p>
+
+<form asp-controller="Admin" asp-action="ConfirmRoleRemoval" method="post">
+    <input type="hidden" name="userName" value="@User.Identity.Name" />
+    <input type="hidden" name="roleName" value="@Constants.SuperAdminRole" />
+    <button type="submit">Revoke Super Admin Role</button>
+    <button type="button" onclick="history.back()">Cancel</button>
+</form>
